@@ -5,12 +5,15 @@ import com.adriel.user_api.dto.UserDTO;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.annotation.PostConstruct;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 
@@ -70,5 +73,12 @@ public class UserController {
         }
 
         return null;
+    }
+
+    @PostMapping("/newUser")
+    UserDTO insert(@RequestBody UserDTO userDTO) {
+        userDTO.setDataCadastro(new Date());
+        usuarios.add(userDTO);
+        return userDTO;
     }
 }
