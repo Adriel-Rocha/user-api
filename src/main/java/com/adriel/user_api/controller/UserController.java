@@ -4,12 +4,14 @@ import com.adriel.user_api.dto.UserDTO;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.annotation.PostConstruct;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 
 @RestController
@@ -56,5 +58,17 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDTO> getUsers() {
         return usuarios;
+    }
+
+    @GetMapping("/users/{cpf}")
+    public UserDTO getUsersByCPF(@PathVariable String cpf) {
+
+        for (UserDTO userFilter: usuarios) {
+            if (userFilter.getCpf().equals(cpf)) {
+                return userFilter;
+            }
+        }
+
+        return null;
     }
 }
