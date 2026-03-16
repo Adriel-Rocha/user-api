@@ -3,6 +3,7 @@ package com.adriel.user_api.controller;
 import com.adriel.user_api.dto.UserDTO;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,5 +81,16 @@ public class UserController {
         userDTO.setDataCadastro(new Date());
         usuarios.add(userDTO);
         return userDTO;
+    }
+
+    @DeleteMapping("/user/{cpf}")
+    public boolean remove(@PathVariable String cpf) {
+        for (UserDTO userFilter: usuarios) {
+            if (userFilter.getCpf().equals(cpf)) {
+                usuarios.remove(userFilter);
+                return true;
+            }
+        }
+        return false;
     }
 }
