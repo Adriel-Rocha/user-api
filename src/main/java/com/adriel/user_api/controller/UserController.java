@@ -3,13 +3,19 @@ package com.adriel.user_api.controller;
 import com.adriel.user_api.dto.UserDTO;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.annotation.PostConstruct;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 
 
 @RestController
@@ -56,5 +62,35 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDTO> getUsers() {
         return usuarios;
+    }
+
+    @GetMapping("/users/{cpf}")
+    public UserDTO getUsersByCPF(@PathVariable String cpf) {
+
+        for (UserDTO userFilter: usuarios) {
+            if (userFilter.getCpf().equals(cpf)) {
+                return userFilter;
+            }
+        }
+
+        return null;
+    }
+
+    @PostMapping("/newUser")
+    UserDTO insert(@RequestBody UserDTO userDTO) {
+        userDTO.setDataCadastro(new Date());
+        usuarios.add(userDTO);
+        return userDTO;
+    }
+
+    @DeleteMapping("/user/{cpf}")
+    public boolean remove(@PathVariable String cpf) {
+        for (UserDTO userFilter: usuarios) {
+            if (userFilter.getCpf().equals(cpf)) {
+                usuarios.remove(userFilter);
+                return true;
+            }
+        }
+        return false;
     }
 }
