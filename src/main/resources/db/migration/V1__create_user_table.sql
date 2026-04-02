@@ -2,10 +2,10 @@ CREATE SCHEMA IF NOT EXISTS users;
 
 CREATE TABLE users.user (
     id BIGSERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
+    user_name VARCHAR(100) NOT NULL,
     cpf VARCHAR(100) NOT NULL,
-    endereco VARCHAR(100) NOT NULL,
+    adress VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    telefone VARCHAR(100) NOT NULL,
-    data_cadastro TIMESTAMP NOT NULL
+    phone VARCHAR(100) NOT NULL,
+    registration_date TIMESTAMP NOT NULL
 );

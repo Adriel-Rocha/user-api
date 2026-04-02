@@ -1,7 +1,6 @@
 package com.adriel.user_api.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,47 +17,67 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<UserDTO> getAll() {
-        List<User> usuarios = userRepository.findAll();
-        return usuarios
-            .stream()
-            .map(UserDTO::convert)
-            .collect(Collectors.toList());
+        return userRepository.findAll()
+                .stream()
+                .map(this::maptoUserDTO)
+                .collect(Collectors.toList());
     }
 
     public UserDTO findById(Long userId) {
-        Optional<User> usuario = userRepository.findById(userId);
-        if (usuario.isPresent()) {
-            return UserDTO.convert(usuario.get());
-        }
-        return null;
+        User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        return maptoUserDTO(user);
     }
 
     public UserDTO save(UserDTO userDTO) {
-        User user = userRepository.save(User.convert(userDTO));
-        return UserDTO.convert(user);
+        User user = userRepository.save(mapToUser(userDTO));
+        
+        return maptoUserDTO(user);
     }
 
     public UserDTO delete(Long userID) {
-        Optional<User> user = userRepository.findById(userID);
-        if (user.isPresent()) {
-            userRepository.delete(user.get());
-        }
-        return null;
+        User user = userRepository.findById(userID)
+                    .orElseThrow(() -> new RuntimeException("User not found!"));
+        
+        userRepository.delete(user);
+
+        return maptoUserDTO(user);
     }
 
     public UserDTO findByCpf(String cpf) {
         User user = userRepository.findByCpf(cpf);
-        if (user != null) {
-            return UserDTO.convert(user);
-        }
-        return null;
+
+        return maptoUserDTO(user);
     }
 
-    public List<UserDTO> queryByName(String name) {
-        List<User> usuarios = userRepository.queryByNomeLike(name);
-        return usuarios
-            .stream()
-            .map(UserDTO::convert)
-            .collect(Collectors.toList());
+    public List<UserDTO> findByUserName(String name) {
+        return userRepository.findByUserNameContaining(name)
+                .stream()
+                .map(this::maptoUserDTO)
+                .toList();
+    }
+
+    public UserDTO maptoUserDTO(User user) {
+
+        return UserDTO.builder()
+                .userName(user.getUserName())
+                .cpf(user.getCpf())
+                .adress(user.getAdress())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .registrationDate(user.getRegistrationDate())
+                .build();
+    }
+
+    public User mapToUser(UserDTO userDTO) {
+        return User.builder()
+            .userName(userDTO.getUserName())
+            .cpf(userDTO.getCpf())
+            .adress(userDTO.getAdress())
+            .email(userDTO.getEmail())
+            .phone(userDTO.getPhone())
+            .registrationDate(userDTO.getRegistrationDate())
+            .build();
     }
 }

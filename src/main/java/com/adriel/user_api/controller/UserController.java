@@ -3,63 +3,63 @@ package com.adriel.user_api.controller;
 import com.adriel.user_api.dto.UserDTO;
 import com.adriel.user_api.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
+import java.util.List;
 
 
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
     
     @GetMapping("/")
     public String getMessage() {
         return "Spring boot is Working!";
     }
 
-    @GetMapping("/user/")
+    @GetMapping
     public List<UserDTO> getUsers() {
         List<UserDTO> usuarios = userService.getAll();
         return usuarios;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     UserDTO findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
-    @PostMapping("/user")
+    @PostMapping
     UserDTO newUser(@RequestBody UserDTO userDTO) {
         return userService.save(userDTO);
     }
 
-    @GetMapping("/user/cpf/{cpf}")
+    @GetMapping("/cpf/{cpf}")
     public UserDTO findByCpf(@PathVariable String cpf) {
         return userService.findByCpf(cpf);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public UserDTO delete(@PathVariable Long id) {
         return userService.delete(id);
     }
 
-    @GetMapping("/user/search")
-    public List<UserDTO> queryByName(@RequestParam(name = "nome", required = true)
-                                    String nome) {
+    @GetMapping("/search")
+    public List<UserDTO> findByUserName(@RequestParam(name = "username", required = true)
+                                    String userName) {
 
-        return userService.queryByName(nome);
+        return userService.findByUserName(userName);
     }
     
 }

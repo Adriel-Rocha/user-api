@@ -2,29 +2,19 @@ package com.adriel.user_api.dto;
 
 import java.util.Date;
 
-import com.adriel.user_api.model.User;
-
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class UserDTO {
-    private String nome;
+    private String userName;
     private String cpf;
-    private String endereco;
+    private String adress;
     private String email;
-    private String telefone;
-    private Date dataCadastro;
+    private String phone;
+    private Date registrationDate;
 
-    public static UserDTO convert(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setNome(user.getNome());
-        userDTO.setEndereco(user.getEndereco());
-        userDTO.setCpf(user.getCpf());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setTelefone(user.getTelefone());
-        userDTO.setDataCadastro(user.getDataCadastro());
-        return userDTO;
-    }
 }

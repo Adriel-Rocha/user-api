@@ -2,38 +2,31 @@ package com.adriel.user_api.model;
 
 import java.util.Date;
 
-import com.adriel.user_api.dto.UserDTO;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity(name = "user")
 public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String nome;
+    private String userName;
     private String cpf;
-    private String endereco;
+    private String adress;
     private String email;
-    private String telefone;
-    private Date dataCadastro;
-
-    public static User convert(UserDTO userDTO) {
-        User user = new User();
-        user.setNome(userDTO.getNome());
-        user.setEndereco(userDTO.getEndereco());
-        user.setCpf(userDTO.getCpf());
-        user.setEmail(userDTO.getEmail());
-        user.setTelefone(userDTO.getTelefone());
-        user.setDataCadastro(userDTO.getDataCadastro());
-        return user;
-    }
+    private String phone;
+    private Date registrationDate;
 }
